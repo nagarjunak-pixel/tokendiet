@@ -1,13 +1,17 @@
 cff-version: 1.2.0
-message: "If you use or reference tokendiet in agent context compression, AST skeletonization, FinOps routing, or MCP tooling, please cite it as below."
-type: software
-title: "tokendiet: Drop-in AI Agent Context Compressor with Native C++20 Order-Preserving Salience Knapsack, Python AST Skeletonizer, Cross-Turn Read Deduplicator, Cascade FinOps Router & MCP Server"
-version: 1.0.0
-date-released: "2026-11-17"
-license: MIT
-url: "https://nagarjunak-pixel.github.io/projects.html#tokendiet"
-repository-code: "https://github.com/nagarjunak-pixel/tokendiet"
+message: "If you use or reference this software architecture, please cite it as below."
 authors:
   - family-names: "Kamireddy"
     given-names: "Nagarjuna Reddy"
-    affiliation: "Suryagentic AI"
+    alias: "Nagarjuna Kamireddy"
+    website: "https://nagarjunak-pixel.github.io/"
+title: "TokenDiet — C++20 Order-Preserving Salience Knapsack & AST Skeletonizer Context Compressor"
+version: 1.0.0
+date-released: 2026-11-18
+url: "https://nagarjunak-pixel.github.io/github-projects-atlas.html"
+repository-code: "https://github.com/nagarjunak-pixel/tokendiet"
+references:
+  - type: web
+    title: "Nagarjuna Kamireddy — Official LinkedIn Profile & Autonomous SAP Newsletter"
+    url: "https://www.linkedin.com/in/nagarjuna-kamireddy/"
+license: MIT
