@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 def _compile_native_lib() -> tuple[ctypes.CDLL | None, str]:
-    src_path = Path(__file__).resolve().parents[3] / "csrc" / "tokendiet_kernels.cpp"
+    src_path = Path(__file__).resolve().parents[1] / "_csrc" / "tokendiet_kernels.cpp"
     clang = shutil.which("clang++") or shutil.which("g++")
     if not src_path.exists() or clang is None:
         return None, "python-fallback"

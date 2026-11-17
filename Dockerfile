@@ -5,7 +5,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends clang g++ curl 
 
 WORKDIR /app
 COPY pyproject.toml uv.lock README.md LICENSE ./
-COPY csrc ./csrc
 COPY src ./src
 COPY ui ./ui
 

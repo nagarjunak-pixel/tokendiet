@@ -4,9 +4,9 @@
 [![Release v1.0.0](https://img.shields.io/badge/release-v1.0.0-10b981)](https://github.com/nagarjunak-pixel/tokendiet/releases/tag/v1.0.0)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-**Drop-in AI Agent Context Compressor, Native `C++20` Order-Preserving Salience Knapsack Pruner, Python AST Skeletonizer, Cross-Turn Read Deduplicator, Cascade FinOps Router & Claude Code MCP Server.**
+**A context compressor for AI coding agents: order-preserving knapsack pruning of noisy tool logs (C++20 kernel with a pure-Python fallback), Python AST skeletonizing, cross-turn deduplication of repeated file reads, a rule-based model-tier router, and an MCP server.**
 
-Coding agents waste most of their context window—and token budget—on noisy test runner output, cached Docker layers, unfocused helper boilerplate, and repeated `read_file` payloads across turns. `tokendiet` trims bloated agent contexts deterministically before inference while preserving **100% of error anchors and AST syntax validity**.
+Coding agents spend a large share of their context window on noisy test-runner output, Docker build logs, unfocused helper code, and the same `read_file` payload repeated across turns. `tokendiet` trims that context deterministically before inference. Lines matching error-anchor patterns (tracebacks, `error TS…`, constraint violations, etc.) are always kept, and skeletonized Python is re-checked with `ast.parse`. It is a small, focused tool (~2k lines of Python plus a ~220-line C++20 kernel), not a learned compressor.
 
 ---
 
@@ -56,6 +56,27 @@ Full artifact: [`benchmarks/real_qwen_tokendiet.json`](benchmarks/real_qwen_toke
 | `TD-05` Docker `ModuleNotFoundError` | `log_prune` | 1,270 | 284 | **77.64%** | `1024.04ms -> 552.53ms` | PASS → PASS |
 | `TD-06` Postgres `CheckViolationError` | `log_prune` | 1,087 | 241 | **77.83%** | `792.12ms -> 382.16ms` | PASS → PASS |
 
+## Scope & Limitations
+
+- **Token counts are estimates.** The compressors budget with a `ceil(len(text) / 4)` character heuristic, not a real tokenizer; the live-audit token numbers come from Ollama's `prompt_eval_count` for `qwen3.5:4b` and will differ for other models' tokenizers.
+- **Small, self-constructed benchmark.** The live audit is 6 hand-built tasks (synthetic pytest/tsc/Docker/Postgres logs and code) run once at temperature 0 on a local 4B model. "Verified" means the answer contains required keyword groups (e.g. file name and line number), not a human or model-graded judgement. Latency numbers are single runs on one laptop.
+- **Heuristic salience.** Line scores come from hand-written regex patterns (tracebacks, `error TS…`, `E   ` lines, diff hunks, etc.). Log formats the patterns do not recognise can lose useful context; tune the budget conservatively.
+- **Python-only skeletonizer.** AST skeletons are implemented for Python source only; other languages pass through the log pruner or untouched.
+- **Router is rule-based.** The cascade router uses keyword hints, retry count and file count with fixed illustrative per-million-token prices; its "cost reduction" figure is relative to those assumed prices, not a measured bill.
+
+## Install
+
+```bash
+# From PyPI (once published)
+pip install tokendiet
+
+# From source (today)
+git clone https://github.com/nagarjunak-pixel/tokendiet.git && cd tokendiet
+uv sync --all-extras        # or: pip install .
+```
+
+The C++20 kernel source ships inside the package and is compiled on first import with `clang++` or `g++` (cached in your temp dir). If no compiler is available, `tokendiet` falls back to an equivalent pure-Python implementation; `tokendiet demo` prints which backend is active. The React workbench (`tokendiet serve`) and the recorded benchmark replay need a source checkout.
+
 ---
 
 ## Quickstart
@@ -104,7 +125,7 @@ uv run tokendiet serve --host 127.0.0.1 --port 8110
 
 ## Why the Native `C++20` Kernel Matters
 
-Implemented in [`csrc/tokendiet_kernels.cpp`](csrc/tokendiet_kernels.cpp) and automatically compiled via `clang++ -O3` (with automatic pure-Python integer parity fallback):
+Implemented in [`src/tokendiet/_csrc/tokendiet_kernels.cpp`](src/tokendiet/_csrc/tokendiet_kernels.cpp) and automatically compiled via `clang++ -O3` (with automatic pure-Python integer parity fallback):
 1. **Windowed Non-Anchor Duplicate Suppression**: Drops repetitive non-anchor boilerplate whose hash appeared in the preceding 8 lines.
 2. **Integer Anchor Halo Propagation**: Uses pure `int64_t` division `raw_score / (1 + distance)` to keep traceback frames and nearby failure context intact.
 3. **Exact Order-Preserving 0/1 Knapsack DP**: Guarantees selected lines preserve original chronological ordering and respect token budgets without floating-point drift (see [ADR 0001](docs/adr/0001-cpp20-order-preserving-salience-knapsack.md) and [ADR 0002](docs/adr/0002-multi-turn-dedup-and-finops-cascade-router.md)).
