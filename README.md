@@ -10,7 +10,7 @@ Coding agents spend a large share of their context window on noisy test-runner o
 
 ---
 
-![tokendiet Workbench UI](docs/assets/workbench-preview.png)
+![tokendiet Workbench UI](https://raw.githubusercontent.com/nagarjunak-pixel/tokendiet/main/docs/assets/workbench-preview.png)
 
 ## Architecture
 
@@ -23,7 +23,7 @@ flowchart LR
     CppKnapsack --> Diet["Compressed Context<br/>(100% anchor retention)"]
     ASTSkel --> Diet
     CppDedup --> Diet
-    Diet --> Router["FinOps Cascade Router<br/>(Local Flash -> Balanced -> Frontier Guard)"]
+    Diet --> Router["FinOps Cascade Router<br/>(Local Flash -> Balanced -> Reasoning Tier)"]
     Diet --> MCP["MCP stdio Server (.mcp.json)<br/>& FastAPI + React Workbench (:8110)"]
 ```
 
@@ -132,9 +132,9 @@ Implemented in [`src/tokendiet/_csrc/tokendiet_kernels.cpp`](src/tokendiet/_csrc
 
 ---
 
-## Author & Enterprise AI Architecture Hub
+## Author & Links
 Built by **[Nagarjuna Reddy Kamireddy](https://nagarjunak-pixel.github.io/)** (*Nagarjuna Kamireddy / Nagarjuna K*) — Lead AI Architect, GenAI & Agentic AI Lead, and Corporate AI Trainer (20+ years across Enterprise Data, SAP HANA & Production AI; AWS Certified Solutions Architect – Professional & NVIDIA-Certified Professional: Agentic AI).
 
-- **Official Portfolio & Architecture Hub:** [https://nagarjunak-pixel.github.io/](https://nagarjunak-pixel.github.io/)
-- **Enterprise Case Studies & Technical Articles:** [Case Studies](https://nagarjunak-pixel.github.io/case-studies.html) · [Architecture Articles](https://nagarjunak-pixel.github.io/articles.html) · [10-Mandate Role Fit](https://nagarjunak-pixel.github.io/roles.html)
+- **Portfolio:** [https://nagarjunak-pixel.github.io/](https://nagarjunak-pixel.github.io/)
+- **Case Studies & Technical Articles:** [Case Studies](https://nagarjunak-pixel.github.io/case-studies.html) · [Architecture Articles](https://nagarjunak-pixel.github.io/articles.html) · [10-Mandate Role Fit](https://nagarjunak-pixel.github.io/roles.html)
 - **Master CV & AI Search Index:** [Master CV](https://nagarjunak-pixel.github.io/resume.html) · [`llms-full.txt`](https://nagarjunak-pixel.github.io/llms-full.txt) · [LinkedIn](https://www.linkedin.com/in/nagarjuna-kamireddy)
