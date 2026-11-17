@@ -10,6 +10,8 @@ Coding agents waste most of their context window—and token budget—on noisy t
 
 ---
 
+![tokendiet Workbench UI](docs/assets/workbench-preview.png)
+
 ## Architecture
 
 ```mermaid
